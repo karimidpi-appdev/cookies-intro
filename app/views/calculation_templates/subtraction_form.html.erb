@@ -9,3 +9,13 @@
 
   <button>Subtract!</button>
 </form>
+
+<p>Your previous subtraction was:
+ 
+  <%= cookies.fetch(:subtraction_first) %>
+  -
+  <%= cookies.fetch(:subtraction_second) %>
+  =
+  <%= cookies.fetch(:subtraction_result) %>
+
+</p>
