@@ -12,6 +12,10 @@
 
 <p>Your previous multiplication result was:
 
+  <%= cookies.fetch(:multiplication_first) %>
+  *
+  <%= cookies.fetch(:multiplication_second) %>
+  =
   <%= cookies.fetch(:multiplication_result) %>
 
 </p>

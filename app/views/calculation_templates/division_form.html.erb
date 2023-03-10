@@ -11,5 +11,9 @@
 </form>
 
 <p>Your previous division result was:
+  <%= cookies.fetch(:division_first) %>
+  /
+  <%= cookies.fetch(:division_second) %>
+  =
   <%= cookies.fetch(:division_result) %>
 </p>
