@@ -7,13 +7,14 @@ class TranslationsController < ApplicationController
 
     # Retrieve a list of the available languages from the API to use for the form dropdown
     @language_list = gt_client.languages("en")
-
+    
     render({ :template => "translation_templates/translation_form.html.erb" })
   end
 
   def translate
-    text_to_translate = params.fetch("message_body")
-    language_choice = params.fetch("language_selection")
+    @text_to_translate = params.fetch("message_body")
+    @language_choice = params.fetch("language_selection")
+    
 
     require "google/cloud/translate"
 
@@ -21,7 +22,7 @@ class TranslationsController < ApplicationController
     gt_client = Google::Cloud::Translate.new({ :version => :v2 })
     
     # Translate the text the user typed into the language they selected!
-    @translation = gt_client.translate(text_to_translate, { :to => language_choice })
+    @translation = gt_client.translate(@text_to_translate, { :to => @language_choice })
 
     phone_number = params.fetch(:telephone)
 
@@ -41,9 +42,14 @@ class TranslationsController < ApplicationController
         :body => @translation
       }
 
+      
       # Send your SMS!
       twilio_client.api.account.messages.create(sms_parameters)
     end
+    
+    cookies.store(:english_sentence, @text_to_translate)
+    cookies.store(:language, @language_choice)
+    cookies.store(:translation_result, @translation)
 
     render({ :template => "translation_templates/translate_results.html.erb" })
   end
